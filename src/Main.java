@@ -37,9 +37,6 @@ public class Main {
         for (int i = 0; i < 3; i++){
             System.out.println((i+1) + ". Operations for " + user[i]);
         }
-//        System.out.println("1. Operations for " + user[0]);
-//        System.out.println("2. Operations for salesperson");
-//        System.out.println("3. Operations for manager");
         System.out.println("4. Exit this program");
         System.out.print("Enter Your Choice: ");
         Scanner scanner = new Scanner(System.in);
@@ -49,6 +46,22 @@ public class Main {
             System.exit(0);
         }
         System.out.println("-----Operations for " + user[choice-1] + " menu -----");
+        System.out.println("What kinds of operation would you like to perform?");
+
+        // admin
+        if (choice - 1 == 0){
+            Administrator admin = new Administrator();
+            admin.printOperations();
+        }
+        // salesperson
+        else if (choice - 1 == 1){
+            Salesperson sales = new Salesperson();
+
+        }
+        // manager
+        else {
+            System.out.println("Invalid Input");
+        }
     }
 }
 
