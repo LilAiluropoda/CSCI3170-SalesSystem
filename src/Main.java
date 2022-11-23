@@ -50,8 +50,9 @@ public class Main {
 
         // admin
         if (choice - 1 == 0){
-            Administrator admin = new Administrator();
+            Administrator admin = new Administrator(st);
             admin.printOperations();
+            admin.createTable();
         }
         // salesperson
         else if (choice - 1 == 1){
