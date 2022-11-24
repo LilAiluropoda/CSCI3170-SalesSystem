@@ -1,11 +1,23 @@
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.Scanner;
 
 public class Administrator {
-    private Statement st;
+    final private Connection con;
+    final private Statement st;
 
-    Administrator(Statement st) {
-        this.st = st;
+    final private String[] table = {
+            "category",
+            "manufacturer",
+            "part",
+            "salesperson",
+            "transaction"
+    };
+
+    public static Scanner scanner = new Scanner(System.in);
+
+    Administrator(Connection con) throws SQLException {
+        this.con = con;
+        this.st = con.createStatement();
     }
 
     public void printOperations() {
@@ -19,14 +31,6 @@ public class Administrator {
     public void createTable() throws SQLException {
         System.out.println("Processing...");
         // create table
-
-        String[] table = {
-                "category",
-                "manufacturer",
-                "part",
-                "salesperson",
-                "transaction"
-        };
         String[] tableCreation = {
                 "CREATE TABLE category " +
                         "(" +
@@ -83,30 +87,46 @@ public class Administrator {
                         "pID INT NOT NULL, " +
                         "sID INT NOT NULL, " +
                         // DATEEEEEEE
-                        "tDate CHAR NOT NULL, " +
+                        "tDate DATE NOT NULL, " +
                         "PRIMARY KEY(tID), " +
                         "FOREIGN KEY(pID) REFERENCES part(pID), " +
                         "FOREIGN KEY(sID) REFERENCES salesperson(sID), " +
                         "CHECK(tID > 0 AND tID <= 9999)" +
                         ")",
         };
-
-
-        for(int i = 0; i < 5; i++){
-//            st.executeUpdate("DROP TABLE " + table[i]);
-            st.executeUpdate(tableCreation[i]);
+        for (int i = 0; i < 5; i++) {
+            PreparedStatement pst = con.prepareStatement(tableCreation[i]);
+            pst.execute();
         }
-
         System.out.println("Done!");
         System.out.println("Database is initialized!");
     }
 
-    public void deleteTable() {
+    public void deleteTable() throws SQLException{
+        System.out.println("Processing...");
 
+        for (int i = 4; i >= 0; i--) {
+            PreparedStatement pst = con.prepareStatement("DROP TABLE " + table[i]);
+            pst.execute();
+        }
+        System.out.println("Done!");
+        System.out.println("Database is deleted!");
     }
 
-    public void loadData() {
+    public void loadData() throws SQLException {
+        System.out.print("Type in the Source Data Folder Path: ");
+        String folderPath = scanner.next();
+        System.out.println("Processing...");
+        // category
+        PreparedStatement pst1 = con.prepareStatement("INSERT INTO category (cID, cName) VALUES (?,?)");
 
+        PreparedStatement pst2 = con.prepareStatement("INSERT INTO manufacturer (mID, mName, mAddress, mPhoneNumber) VALUES (?,?,?,?)");
+        PreparedStatement pst3 = con.prepareStatement("INSERT INTO part (pID, pName, pPrice, pWarrantyPeriod, pAvailableQuantity) VALUES (?,?,?,?,?)");
+        PreparedStatement pst4 = con.prepareStatement("INSERT INTO salesperson (sID, sName, sAddress, sPhoneNumber, sExperience) VALUES (?,?,?,?)");
+        PreparedStatement pst5 = con.prepareStatement("INSERT INTO transaction (tID, tDate) VALUES (?,?)");
+
+        System.out.println("Done!");
+        System.out.println("Database is inputted to the database!");
     }
 
     public void showContent() {
