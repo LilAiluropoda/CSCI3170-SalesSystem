@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.*;
 import java.util.Scanner;
 
@@ -102,7 +104,7 @@ public class Administrator {
         System.out.println("Database is initialized!");
     }
 
-    public void deleteTable() throws SQLException{
+    public void deleteTable() throws SQLException {
         System.out.println("Processing...");
 
         for (int i = 4; i >= 0; i--) {
@@ -113,17 +115,79 @@ public class Administrator {
         System.out.println("Database is deleted!");
     }
 
-    public void loadData() throws SQLException {
+    public void loadData() throws SQLException, FileNotFoundException{
+
         System.out.print("Type in the Source Data Folder Path: ");
         String folderPath = scanner.next();
         System.out.println("Processing...");
         // category
-        PreparedStatement pst1 = con.prepareStatement("INSERT INTO category (cID, cName) VALUES (?,?)");
-
-        PreparedStatement pst2 = con.prepareStatement("INSERT INTO manufacturer (mID, mName, mAddress, mPhoneNumber) VALUES (?,?,?,?)");
-        PreparedStatement pst3 = con.prepareStatement("INSERT INTO part (pID, pName, pPrice, pWarrantyPeriod, pAvailableQuantity) VALUES (?,?,?,?,?)");
-        PreparedStatement pst4 = con.prepareStatement("INSERT INTO salesperson (sID, sName, sAddress, sPhoneNumber, sExperience) VALUES (?,?,?,?)");
-        PreparedStatement pst5 = con.prepareStatement("INSERT INTO transaction (tID, tDate) VALUES (?,?)");
+        File file = new File("./src/" + folderPath + "/" + table[0] + ".txt");
+        Scanner fileReader = new Scanner(file);
+        while (fileReader.hasNextLine()) {
+            String data = fileReader.nextLine();
+            String[] values = data.split("\t", 2);
+            PreparedStatement pst1 = con.prepareStatement("INSERT INTO category (cID, cName) VALUES (?,?)");
+            pst1.setInt(1, Integer.parseInt(values[0]));
+            pst1.setString(2, values[1]);
+            pst1.execute();
+        }
+        // manufacturer
+        file = new File("./src/" + folderPath + "/" + table[1] + ".txt");
+        fileReader = new Scanner(file);
+        while (fileReader.hasNextLine()) {
+            String data = fileReader.nextLine();
+            String[] values = data.split("\t", 4);
+            PreparedStatement pst2 = con.prepareStatement("INSERT INTO manufacturer (mID, mName, mAddress, mPhoneNumber) VALUES (?,?,?,?)");
+            pst2.setInt(1, Integer.parseInt(values[0]));
+            pst2.setString(2, values[1]);
+            pst2.setString(3, values[2]);
+            pst2.setInt(4, Integer.parseInt(values[3]));
+            pst2.execute();
+        }
+        // parts
+        file = new File("./src/" + folderPath + "/" + table[2] + ".txt");
+        fileReader = new Scanner(file);
+        while (fileReader.hasNextLine()) {
+            String data = fileReader.nextLine();
+            String[] values = data.split("\t", 7);
+            PreparedStatement pst3 = con.prepareStatement("INSERT INTO part (pID, pName, pPrice, mID, cID, pWarrantyPeriod, pAvailableQuantity) VALUES (?,?,?,?,?,?,?)");
+            pst3.setInt(1, Integer.parseInt(values[0]));
+            pst3.setString(2, values[1]);
+            pst3.setInt(3, Integer.parseInt(values[2]));
+            pst3.setInt(4, Integer.parseInt(values[3]));
+            pst3.setInt(5, Integer.parseInt(values[4]));
+            pst3.setInt(6, Integer.parseInt(values[5]));
+            pst3.setInt(7, Integer.parseInt(values[6]));
+            pst3.execute();
+        }
+        // salesperson
+        file = new File("./src/" + folderPath + "/" + table[3] + ".txt");
+        fileReader = new Scanner(file);
+        while (fileReader.hasNextLine()) {
+            String data = fileReader.nextLine();
+            String[] values = data.split("\t", 5);
+            PreparedStatement pst4 = con.prepareStatement("INSERT INTO salesperson (sID, sName, sAddress, sPhoneNumber, sExperience) VALUES (?,?,?,?,?)");
+            pst4.setInt(1, Integer.parseInt(values[0]));
+            pst4.setString(2, values[1]);
+            pst4.setString(3, values[2]);
+            pst4.setInt(4, Integer.parseInt(values[3]));
+            pst4.setInt(5, Integer.parseInt(values[4]));
+            pst4.execute();
+        }
+        // transaction
+        file = new File("./src/" + folderPath + "/" + table[4] + ".txt");
+        fileReader = new Scanner(file);
+        while (fileReader.hasNextLine()) {
+            String data = fileReader.nextLine();
+            String[] values = data.split("\t", 5);
+            PreparedStatement pst5 = con.prepareStatement("INSERT INTO transaction (tID, pID, sID, tDate) VALUES (?,?,?,?)");
+            pst5.setInt(1, Integer.parseInt(values[0]));
+            pst5.setInt(2, Integer.parseInt(values[1]));
+            pst5.setInt(3, Integer.parseInt(values[2]));
+            String[] dateDetail = values[3].split("/",3);
+            pst5.setDate(4, java.sql.Date.valueOf(dateDetail[2] + "-" + dateDetail[1] + "-" + dateDetail[0]));
+            pst5.execute();
+        }
 
         System.out.println("Done!");
         System.out.println("Database is inputted to the database!");
