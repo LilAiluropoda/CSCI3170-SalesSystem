@@ -193,8 +193,31 @@ public class Administrator {
         System.out.println("Database is inputted to the database!");
     }
 
-    public void showContent() {
+    public void showContent() throws SQLException {
+        System.out.print("Which table would you like to show: ");
+        String inputTable = scanner.next();
+        System.out.println("Content of table " + inputTable + ":");
 
+        String query = "SELECT * FROM " + inputTable;
+
+        PreparedStatement pst = con.prepareStatement(query);
+        ResultSet resultSet = pst.executeQuery();
+
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        int columnCount = metaData.getColumnCount();
+        System.out.print(metaData.getColumnName(1));
+        for(int i = 0; i < columnCount; i++){
+            System.out.print(" | ");
+            System.out.print(metaData.getColumnName(i+1));
+        }
+        System.out.println(" | ");
+        while(resultSet.next()){
+            for(int i = 0; i < columnCount; i++){
+                System.out.print(" | ");
+                System.out.print(resultSet.getString(i+1));
+            }
+            System.out.println(" | ");
+        }
     }
 
 }
