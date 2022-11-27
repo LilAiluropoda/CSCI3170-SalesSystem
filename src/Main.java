@@ -1,6 +1,5 @@
 import java.io.FileNotFoundException;
 import java.sql.*;
-import java.text.ParseException;
 import java.util.Scanner;
 
 public class Main {
@@ -21,6 +20,7 @@ public class Main {
         Connection con = DriverManager.getConnection(dbAddress, dbUsername, dbPassword);
         System.out.println("Connection Established successfully");
 
+        System.out.println("Welcome to sales system!");
         Statement st = con.createStatement();
 
         loop:
@@ -69,6 +69,10 @@ public class Main {
 
             }
             // manager
+            else if (choice - 1 == 2){
+                Manager manager = new Manager();
+
+            }
             else {
                 System.out.println("Invalid Input");
             }

@@ -48,15 +48,20 @@ public class Administrator {
                         "mAddress VARCHAR(50) NOT NULL, " +
                         "mPhoneNumber CHAR(8) NOT NULL, " +
                         "PRIMARY KEY(mID), " +
-                        "CHECK(mID > 0 AND mID <= 99 AND mPhoneNumber > 0)" +
+                        "CHECK(" +
+                        "mID > 0 AND mID <= 99 " +
+                        "AND mPhoneNumber > 0 " +
+                        "AND NOT mPhoneNumber LIKE '%[^0-9]%' " +
+                        "AND LENGTH(mPhoneNumber) = 8 " +
+                        ")" +
                         ")",
                 "CREATE TABLE part" +
                         "(" +
                         "pID INT NOT NULL ," +
                         "pName VARCHAR(20) NOT NULL, " +
                         "pPrice INT NOT NULL, " +
-                        "mID INT," +
-                        "cID INT, " +
+                        "mID INT NOT NULL," +
+                        "cID INT NOT NULL, " +
                         "pWarrantyPeriod INT NOT NULL, " +
                         "pAvailableQuantity INT NOT NULL, " +
                         "PRIMARY KEY(pID), " +
@@ -65,6 +70,8 @@ public class Administrator {
                         "CHECK(" +
                         "pID > 0 AND pID <= 999 " +
                         "AND pPrice > 0 AND pPrice <= 99999 " +
+                        "AND mID > 0 AND mID <= 99 " +
+                        "AND cID > 0 AND cID <= 9 " +
                         "AND pWarrantyPeriod > 0 AND pWarrantyPeriod <= 99 " +
                         "AND pAvailableQuantity >= 0 AND pAvailableQuantity <= 99" +
                         ")" +
@@ -79,21 +86,25 @@ public class Administrator {
                         "PRIMARY KEY(sID), " +
                         "CHECK(" +
                         "sID > 0 AND sID <= 99 " +
-                        "AND sPhoneNumber > 0 " +
+                        "AND NOT sPhoneNumber LIKE '%[^0-9]%' " +
+                        "AND LENGTH(sPhoneNumber) = 8 " +
                         "AND sExperience > 0 AND sExperience <= 9" +
                         ")" +
                         ")",
                 "CREATE TABLE transaction" +
                         "(" +
-                        "tID INT NOT NULL ," +
+                        "tID INT NOT NULL," +
                         "pID INT NOT NULL, " +
                         "sID INT NOT NULL, " +
-                        // DATEEEEEEE
                         "tDate DATE NOT NULL, " +
                         "PRIMARY KEY(tID), " +
                         "FOREIGN KEY(pID) REFERENCES part(pID), " +
                         "FOREIGN KEY(sID) REFERENCES salesperson(sID), " +
-                        "CHECK(tID > 0 AND tID <= 9999)" +
+                        "CHECK(" +
+                        "tID > 0 AND tID <= 9999 " +
+                        "AND pID > 0 AND pID <= 999 " +
+                        "AND sID > 0 AND sID <= 99 " +
+                        ")" +
                         ")",
         };
         for (int i = 0; i < 5; i++) {
@@ -193,8 +204,31 @@ public class Administrator {
         System.out.println("Database is inputted to the database!");
     }
 
-    public void showContent() {
+    public void showContent() throws SQLException {
+        System.out.print("Which table would you like to show: ");
+        String inputTable = scanner.next();
+        System.out.println("Content of table " + inputTable + ":");
 
+        String query = "SELECT * FROM " + inputTable;
+
+        PreparedStatement pst = con.prepareStatement(query);
+        ResultSet resultSet = pst.executeQuery();
+
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        int columnCount = metaData.getColumnCount();
+        System.out.print(metaData.getColumnName(1));
+        for(int i = 0; i < columnCount; i++){
+            System.out.print(" | ");
+            System.out.print(metaData.getColumnName(i+1));
+        }
+        System.out.println(" | ");
+        while(resultSet.next()){
+            for(int i = 0; i < columnCount; i++){
+                System.out.print(" | ");
+                System.out.print(resultSet.getString(i+1));
+            }
+            System.out.println(" | ");
+        }
     }
 
 }
