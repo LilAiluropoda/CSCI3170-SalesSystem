@@ -2,6 +2,7 @@ import java.io.FileNotFoundException;
 import java.sql.*;
 import java.util.Scanner;
 
+// remark: declare the object of 3 person in the beginning to prevent delcaration repeat
 public class Main {
     public static String dbAddress = "jdbc:mysql://projgw.cse.cuhk.edu.hk:2633/db14?autoReconnect=true&useSSL=false";
     public static String dbUsername = "Group14";
