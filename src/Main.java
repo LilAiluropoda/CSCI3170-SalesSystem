@@ -66,7 +66,9 @@ public class Main {
             }
             // salesperson
             else if (choice - 1 == 1){
-                Salesperson sales = new Salesperson();
+                Salesperson sales = new Salesperson(con);
+                sales.print_operation();
+                sales.search_for_part();
 
             }
             // manager

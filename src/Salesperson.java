@@ -1,25 +1,27 @@
 import java.io.*;
 import java.sql.*;
 import java.util.Scanner;
+
+
 public class Salesperson {
     final private Connection conn;
-//    final private Statment stmt;
+    final private Statement stmt;
 
     // 1 for search_part,
     // replace search_criterion with (mName/pName)
     // 2 for sell_part
     //
     private static String [] query_operation = {
-            "SELECT  pID AS ID, pName AS Name, mName AS Manufacturer, cName AS Category, pAvailableQuantity AS Quantity, pWarrantyPeriod AS Warranty, pPrice AS Price" +
+            "SELECT  pID AS ID, pName AS Name, mName AS Manufacturer, cName AS Category, pAvailableQuantity AS Quantity, pWarrantyPeriod AS Warranty, pPrice AS Price " +
             "FROM part natural join manufacturer natural join category " +
             "WHERE search_criterion = \"search_keyword\" " +
             "ORDER BY pPrice sort_in",
             ""
     };
     final private static Scanner scanner = new Scanner(System.in);
-    public Salesperson(Connection conn) throws SQLException {
+    Salesperson(Connection conn) throws SQLException {
         this.conn = conn;
-//        this.stmt = conn.createStatement();
+        this.stmt = conn.createStatement();
     }
 
     public void print_operation(){
@@ -31,14 +33,16 @@ public class Salesperson {
         System.out.print("Enter Your Choice: ");
     }
 
-    public void search_for_part(){
+    public void search_for_part() throws SQLException{
         System.out.println("Choose the Search criterion:");
         System.out.println("1. Part Name");
         System.out.println("2. Manufacturer Name");
         System.out.print("Choose the Search criterion: ");
         // ask for search criterion, 1 for part name, 2 for manufacturer name
-        String search_criterion, sort_in, cur_query_op, search_keyword;
+        String search_criterion = null, sort_in = null, cur_query_op, search_keyword = null;
         int choose = scanner.nextInt();
+        // to read the new-line character, let the next nextline() scanner can get input correctly
+        scanner.nextLine();
         switch(choose){
             case 1:
                 search_criterion = "pName";
@@ -53,6 +57,10 @@ public class Salesperson {
         System.out.print("Type in the Search Keyword: ");
         search_keyword = scanner.nextLine();
         // ask for the way to sort the array
+        System.out.println("Chose oderdering:");
+        System.out.println("1. By price, ascending order");
+        System.out.println("2. By price, descending order");
+        System.out.print("Choose the search criterion");
         choose = scanner.nextInt();
         switch(choose){
             case 1:
@@ -73,7 +81,7 @@ public class Salesperson {
         // debug end
 
         //get tge result and print out the result
-        ResultSet rs = this.conn.createStatement(cur_query_op);
+        ResultSet rs = this.stmt.executeQuery(cur_query_op);
         while(rs.next()){
             System.out.print("| ");
             for(int i = 1; i <= 7; i++){
@@ -82,7 +90,7 @@ public class Salesperson {
             }
             System.out.println();
         }
-        println("End of Query");
+        System.out.println("End of Query");
 
     }
 
