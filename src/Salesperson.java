@@ -1,6 +1,8 @@
 import java.io.*;
 import java.sql.*;
 import java.util.Scanner;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 // to do: print the header of column in the beginning search part result
 public class Salesperson {
@@ -19,7 +21,8 @@ public class Salesperson {
             "ORDER BY pPrice sort_in",
             "SELECT pAvailableQuantity, pName " +
             "FROM part WHERE pID = ",
-            ""
+            "INSERT INTO transaction(tID, pID, sID, tDate) " +
+            "values(?, ?, ?,?)"
     };
     final private static Scanner scanner = new Scanner(System.in);
     Salesperson(Connection conn) throws SQLException {
@@ -126,8 +129,34 @@ public class Salesperson {
             System.out.println("Error. The available quality of this part in database is " + avai_qua +". This operation will truncate.");
             return;
         }
-        // Perform trasaction
+        // Perform transaction
+        // 1. Update the available quantity the corresponding part
+        // 2. Add a new record to the transaction record
 
+        avai_qua--;
+        // Update available quantity
+        String update_statement = "UPDATE part SET pAvailableQuantity = " +  String.valueOf(avai_qua) + " WHERE pId = " + String.valueOf(pid);
+        System.out.println(update_statement);
+        int update_ret = stmt.executeUpdate(update_statement);
+        System.out.println("update ret: " + update_ret);
+        // Add a new record to the transaction record
+        // get the max of tid first
+        rs = stmt.executeQuery("select MAX(tID) from transaction");
+        rs.next();
+        int tid = rs.getInt(1);
+        tid++;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date date = new java.util.Date();
+        java.sql.Date sql_date = java.sql.Date.valueOf(sdf.format(date));
+        PreparedStatement pstmt = this.conn.prepareStatement(query_operation[2]);
+        pstmt.setInt(1, tid);
+        pstmt.setInt(2, pid);
+        pstmt.setInt(3, sid);
+        pstmt.setDate(4, sql_date);
+        update_ret = pstmt.executeUpdate();
+        System.out.println("update ret: " + update_ret);
+        // end of perform transaction and print the result
+        System.out.println("Product: " + pname + "(id: " + pid + ") Remaining Quality: " + avai_qua);
     }
 
     public void dicide_operation() throws SQLException{
