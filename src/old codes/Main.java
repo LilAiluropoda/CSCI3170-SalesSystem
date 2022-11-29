@@ -1,7 +1,8 @@
 import java.io.FileNotFoundException;
 import java.sql.*;
-import java.util.*;
-// remark: declare the object of 3 person in the beginning to prevent declaration repeat
+import java.util.Scanner;
+
+// remark: declare the object of 3 person in the beginning to prevent delcaration repeat
 public class Main {
     public static String dbAddress = "jdbc:mysql://projgw.cse.cuhk.edu.hk:2633/db14?autoReconnect=true&useSSL=false";
     public static String dbUsername = "Group14";
@@ -72,48 +73,8 @@ public class Main {
             }
             // manager
             else if (choice - 1 == 2){
-                Manager manager = new Manager(con);
-                manager.SelectOp();
+                Manager manager = new Manager();
 
-                Scanner stdin = new Scanner(System.in);
-                Boolean flag = true;
-                int mchoice = -1;
-
-                do{ //loop if invalid output
-                    try{
-                        mchoice = stdin.nextInt(); //read input
-
-                    } catch (InputMismatchException ex) { //Catch Exception
-                        System.out.println("Invalid Input: Wrong input type");
-                        System.out.print("Enter Your Choice: ");
-                        continue;
-
-                    }
-
-                    switch (mchoice) {
-                        case 1: //ascending order
-                            manager.ListSalepersons();
-                            flag = false;
-                            break;
-                        case 2: //descending order
-                            manager.CountSalesRecord();
-                            flag = false;
-                            break;
-                        case 3:
-                            manager.ShowSalesValue();
-                            flag = false;
-                            break;
-                        case 4:
-                            manager.ShowNMostPopularPart();
-                            flag = false;
-                            break;
-                        case 5:
-                            continue loop;
-                        default:
-                            System.out.println("Invalid Input: Integer out of range");
-                            System.out.print("Enter Your Choice: ");
-                    }
-                } while (flag);
             }
             else {
                 System.out.println("Invalid Input");
