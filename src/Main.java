@@ -67,7 +67,7 @@ public class Main {
             // salesperson
             else if (choice - 1 == 1){
                 Salesperson sales = new Salesperson(con);
-                sales.dicide_operation();
+                sales.decide_operation();
 
             }
             // manager

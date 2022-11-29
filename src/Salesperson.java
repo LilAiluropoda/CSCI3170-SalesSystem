@@ -1,4 +1,3 @@
-import java.io.*;
 import java.sql.*;
 import java.util.Scanner;
 
@@ -61,7 +60,7 @@ public class Salesperson {
         System.out.print("Type in the Search Keyword: ");
         search_keyword = scanner.nextLine();
         // ask for the way to sort the array
-        System.out.println("Chose oderdering:");
+        System.out.println("Choose ordering:");
         System.out.println("1. By price, ascending order");
         System.out.println("2. By price, descending order");
         System.out.print("Choose the search criterion: ");
@@ -130,7 +129,7 @@ public class Salesperson {
 
     }
 
-    public void dicide_operation() throws SQLException{
+    public void decide_operation() throws SQLException{
         print_operation();
         int choice = scanner.nextInt();
         switch (choice){
