@@ -83,10 +83,6 @@ public class Salesperson {
         cur_query_op = this.query_operation[0].replace("search_criterion", search_criterion);
         cur_query_op = cur_query_op.replace("sort_in", sort_in);
         cur_query_op = cur_query_op.replace("search_keyword", search_keyword);
-        // debug use
-        // System.out.println("Debug. query operation send in to pstmt:");
-        // System.out.println(cur_query_op);
-        // debug end
 
         //get the result and print out the result
         ResultSet rs = this.stmt.executeQuery(cur_query_op);
@@ -108,23 +104,14 @@ public class Salesperson {
         int pid = scanner.nextInt();
         System.out.print("Enter The Salesperson ID: ");
         int sid = scanner.nextInt();
-        // Debug check
-        System.out.println("the sid read: "+sid);
-        // Debug end
 
         // check is the part available
         String cur_query_op = this.query_operation[1] + String.valueOf(pid);
-        // Debug
-        System.out.println(cur_query_op);
-        // Debug
         ResultSet rs = this.stmt.executeQuery(cur_query_op);
         rs.next();
         String ret_sql = rs.getString(1);
         int avai_qua = Integer.parseInt(ret_sql);
         String pname = rs.getString(2);
-        // Debug use
-        System.out.println("Available quantity: " + avai_qua);
-        // Debug use
         if (avai_qua <= 0){
             System.out.println("Error. The available quality of this part in database is " + avai_qua +". This operation will truncate.");
             return;
