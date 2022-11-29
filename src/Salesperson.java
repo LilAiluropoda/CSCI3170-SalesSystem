@@ -16,7 +16,7 @@ public class Salesperson {
     private static String [] query_operation = {
             "SELECT  pID AS ID, pName AS Name, mName AS Manufacturer, cName AS Category, pAvailableQuantity AS Quantity, pWarrantyPeriod AS Warranty, pPrice AS Price " +
             "FROM part natural join manufacturer natural join category " +
-            "WHERE search_criterion = \"search_keyword\" " +
+            "WHERE search_criterion LIKE \"%search_keyword%\" " +
             "ORDER BY pPrice sort_in",
             "SELECT pAvailableQuantity, pName " +
             "FROM part WHERE pID = ",
