@@ -223,8 +223,8 @@ public class Administrator {
             System.out.print(" | ");
         }
         System.out.println();
-        System.out.print("| ");
         while(resultSet.next()){
+            System.out.print("| ");
             for(int i = 0; i < columnCount; i++){
                 System.out.print(resultSet.getString(i+1));
                 System.out.print(" | ");
