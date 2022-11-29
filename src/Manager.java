@@ -215,7 +215,7 @@ public class Manager {
         //convert to String
         String N = Integer.toString(x);
 
-        String query = "SELECT p.pID, p.pName, x.trans FROM (SELECT t.pID, COUNT(t.tID) AS trans FROM transaction t GROUP BY t.pID ORDER BY trans DESC LIMIT "+ N +") x, part p WHERE p.pID = x.pID;";
+        String query = "SELECT p.pID, p.pName, x.trans FROM (SELECT t.pID, COUNT(t.tID) AS trans FROM transaction t GROUP BY t.pID ORDER BY trans DESC LIMIT "+ N +") x, part p WHERE p.pID = x.pID ORDER BY x.trans DESC;";
         ResultSet rs;
         try {
             rs = stmt.executeQuery(query); //send query
