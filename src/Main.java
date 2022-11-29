@@ -27,6 +27,7 @@ public class Main {
         loop:
         while(true){
             // print statements
+            System.out.println();
             System.out.println("-----Main menu-----");
             System.out.println("What kinds of operation would you like to perform?");
             for (int i = 0; i < 3; i++){
@@ -67,8 +68,7 @@ public class Main {
             // salesperson
             else if (choice - 1 == 1){
                 Salesperson sales = new Salesperson(con);
-                sales.print_operation();
-                sales.search_for_part();
+                sales.dicide_operation();
 
             }
             // manager
