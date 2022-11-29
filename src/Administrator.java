@@ -216,18 +216,20 @@ public class Administrator {
 
         ResultSetMetaData metaData = resultSet.getMetaData();
         int columnCount = metaData.getColumnCount();
-        System.out.print(metaData.getColumnName(1));
+        // System.out.print(metaData.getColumnName(1));
+        System.out.print("| ");
         for(int i = 0; i < columnCount; i++){
-            System.out.print(" | ");
             System.out.print(metaData.getColumnName(i+1));
+            System.out.print(" | ");
         }
-        System.out.println(" | ");
+        System.out.println();
         while(resultSet.next()){
+            System.out.print("| ");
             for(int i = 0; i < columnCount; i++){
-                System.out.print(" | ");
                 System.out.print(resultSet.getString(i+1));
+                System.out.print(" | ");
             }
-            System.out.println(" | ");
+            System.out.println();
         }
     }
 
