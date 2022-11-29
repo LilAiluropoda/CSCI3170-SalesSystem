@@ -2,6 +2,8 @@ import java.sql.*;
 import java.util.Scanner;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.InputMismatchException;
+
 
 // to do: print the header of column in the beginning search part result
 public class Salesperson {
@@ -146,20 +148,34 @@ public class Salesperson {
     }
 
     public void decide_operation() throws SQLException{
-        print_operation();
-        int choice = scanner.nextInt();
-        switch (choice){
-            case 1:
-                this.search_for_part();
-                break;
-            case 2:
-                this.transaction();
-                break;
-            case 3:
-                break;
-            default:
-                System.out.println("Invalid input! You should input number 1, 2, or 3! This operation would be truncate.");
-        }
+        int choice ;
+        boolean flag = true;
+        do{
+            print_operation();
+            try{
+                choice = scanner.nextInt();
+                switch (choice){
+                    case 1:
+                        this.search_for_part();
+                        flag = false;
+                        break;
+                    case 2:
+                        this.transaction();
+                        flag = false;
+                        break;
+                    case 3:
+                        flag = false;
+                        break;
+                    default:
+                        System.out.println("Invalid input! You should input number 1, 2, or 3!");
+                }
+            } catch (InputMismatchException e){
+                System.err.println("Invalid Input: Wrong input type! Going back to the salesperson page.");
+                scanner.next();
+                System.out.println("-----Operations for salesperson menu -----  ");
+                System.out.println("What kinds of operation would you like to perform?");
+            }
+        } while (flag);
 
     }
 }
