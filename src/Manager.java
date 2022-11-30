@@ -41,6 +41,7 @@ public class Manager {
             } catch (InputMismatchException ex) { //Catch Exception
                 System.out.println("Invalid Input: Wrong input type");
                 System.out.print("Choose the list ordering: ");
+                stdin.next();
                 continue;
 
             }
@@ -103,6 +104,7 @@ public class Manager {
                     lowerb = stdin.nextInt();
                 } catch (InputMismatchException ex){
                     System.out.println("Invalid Input: Wrong input type");
+                    stdin.next();
                 }
                 if (lowerb >= 0){
                     flag = false;
@@ -115,6 +117,7 @@ public class Manager {
                     upperb = stdin.nextInt();
                 } catch (InputMismatchException ex){
                     System.out.println("Invalid Input: Wrong input type");
+                    stdin.next();
                 }
                 if (upperb >= 0){
                     flag = false;
@@ -205,6 +208,7 @@ public class Manager {
                 flag = false;
             } catch (InputMismatchException ex){
                 System.out.println("Invalid Input: Wrong input type");
+                stdin.next();
             }
             if (x <= 0){
                 System.out.println("Invalid Input: Integer out of range");
