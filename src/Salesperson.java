@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.InputMismatchException;
 
 
-// to do: print the header of column in the beginning search part result
 public class Salesperson {
     final private Connection conn;
     final private Statement stmt;
