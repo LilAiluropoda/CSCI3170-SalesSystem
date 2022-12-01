@@ -137,7 +137,8 @@ public class Administrator {
                 System.out.print("Type in the Source Data Folder Path: ");
                 String folderPath = scanner.next();
                 System.out.println("Processing...");
-                File file = new File("./src/" + folderPath + "/" + table[0] + ".txt");
+                File file = new File("./" + folderPath + "/" + table[0] + ".txt");
+//                File file = new File("./src/" + folderPath + "/" + table[0] + ".txt");
                 Scanner fileReader = new Scanner(file);
 
                 // category
@@ -150,7 +151,7 @@ public class Administrator {
                     pst1.execute();
                 }
                 // manufacturer
-                file = new File("./src/" + folderPath + "/" + table[1] + ".txt");
+                file = new File("./" + folderPath + "/" + table[1] + ".txt");
                 fileReader = new Scanner(file);
                 while (fileReader.hasNextLine()) {
                     String data = fileReader.nextLine();
@@ -163,7 +164,7 @@ public class Administrator {
                     pst2.execute();
                 }
                 // parts
-                file = new File("./src/" + folderPath + "/" + table[2] + ".txt");
+                file = new File("./" + folderPath + "/" + table[2] + ".txt");
                 fileReader = new Scanner(file);
                 while (fileReader.hasNextLine()) {
                     String data = fileReader.nextLine();
@@ -179,7 +180,7 @@ public class Administrator {
                     pst3.execute();
                 }
                 // salesperson
-                file = new File("./src/" + folderPath + "/" + table[3] + ".txt");
+                file = new File("./" + folderPath + "/" + table[3] + ".txt");
                 fileReader = new Scanner(file);
                 while (fileReader.hasNextLine()) {
                     String data = fileReader.nextLine();
@@ -193,7 +194,7 @@ public class Administrator {
                     pst4.execute();
                 }
                 // transaction
-                file = new File("./src/" + folderPath + "/" + table[4] + ".txt");
+                file = new File("./" + folderPath + "/" + table[4] + ".txt");
                 fileReader = new Scanner(file);
                 while (fileReader.hasNextLine()) {
                     String data = fileReader.nextLine();
