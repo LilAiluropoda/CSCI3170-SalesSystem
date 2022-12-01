@@ -183,7 +183,7 @@ public class Manager {
                 int sid = rs.getInt("p.mID");
                 String sname = rs.getString("m.mName");
                 int salesvalue = rs.getInt("sumsales");
-                String row = String.format("| %d | %s | %d", sid, sname, salesvalue);
+                String row = String.format("| %d | %s | %d |", sid, sname, salesvalue);
 
                 //print result
                 System.out.println(row);
