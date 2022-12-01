@@ -86,6 +86,7 @@ public class Main {
                     } catch (InputMismatchException ex) { //Catch Exception
                         System.out.println("Invalid Input: Wrong input type");
                         System.out.print("Enter Your Choice: ");
+                        stdin.next();
                         continue;
 
                     }
