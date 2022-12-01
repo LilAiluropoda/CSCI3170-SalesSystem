@@ -108,12 +108,16 @@ public class Salesperson {
         // check is the part available
         String cur_query_op = this.query_operation[1] + String.valueOf(pid);
         ResultSet rs = this.stmt.executeQuery(cur_query_op);
-        rs.next();
+        // no such product
+        if(!rs.next()){
+            System.out.println("Error. The part is unavailable. This operation will truncate.");
+            return;
+        }
         String ret_sql = rs.getString(1);
         int avai_qua = Integer.parseInt(ret_sql);
         String pname = rs.getString(2);
         if (avai_qua <= 0){
-            System.out.println("Error. The available quality of this part in database is " + avai_qua +". This operation will truncate.");
+            System.out.println("Error. The part is unavailable. This operation will truncate.");
             return;
         }
         // Perform transaction
@@ -123,9 +127,7 @@ public class Salesperson {
         avai_qua--;
         // Update available quantity
         String update_statement = "UPDATE part SET pAvailableQuantity = " +  String.valueOf(avai_qua) + " WHERE pId = " + String.valueOf(pid);
-        System.out.println(update_statement);
-        int update_ret = stmt.executeUpdate(update_statement);
-        System.out.println("update ret: " + update_ret);
+        stmt.executeUpdate(update_statement);
         // Add a new record to the transaction record
         // get the max of tid first
         rs = stmt.executeQuery("select MAX(tID) from transaction");
@@ -140,8 +142,7 @@ public class Salesperson {
         pstmt.setInt(2, pid);
         pstmt.setInt(3, sid);
         pstmt.setDate(4, sql_date);
-        update_ret = pstmt.executeUpdate();
-        System.out.println("update ret: " + update_ret);
+        pstmt.executeUpdate();
         // end of perform transaction and print the result
         System.out.println("Product: " + pname + "(id: " + pid + ") Remaining Quality: " + avai_qua);
     }
