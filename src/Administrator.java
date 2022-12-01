@@ -1,7 +1,10 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Scanner;
+import java.util.spi.CalendarDataProvider;
 
 public class Administrator {
     final private Connection con;
@@ -228,6 +231,7 @@ public class Administrator {
         } while (flag);
 
         System.out.println("Content of table " + inputTable + ":");
+
         String query = "SELECT * FROM " + inputTable;
 
         PreparedStatement pst = con.prepareStatement(query);
@@ -245,11 +249,16 @@ public class Administrator {
         while (resultSet.next()) {
             System.out.print("| ");
             for (int i = 0; i < columnCount; i++) {
-                System.out.print(resultSet.getString(i + 1));
+                if(resultSet.getMetaData().getColumnName(i+1).equals("tDate")){
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    String dateInStr = sdf.format(resultSet.getDate(i+1));
+                    System.out.print(dateInStr);
+                } else {
+                    System.out.print(resultSet.getString(i + 1));
+                }
                 System.out.print(" | ");
             }
             System.out.println();
         }
     }
-
 }
